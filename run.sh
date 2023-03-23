@@ -50,25 +50,46 @@ echo "
 ###############################################################################
 "
 # Converting IPFS CID (hex repr) in https://docs.ipfs.tech/concepts/content-addressing/#cid-conversion to decimal 
-leo run post 2793123896416649578508430956173875066425468388805468715479907750778834469731416946970field;
+# leo run post 2793123896416649578508430956173875066425468388805468715479907750778834469731416946970field;
+leo run post 100field;
 
 echo "
 ###############################################################################
 ########                                                               ########
-########          STEP 2:  Mint wcredits                               ########
+########          STEP 2:  Mint credits                               ########
 ########                                                               ########
 ###############################################################################
 "
 # Mint some token
-leo run mint_token aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke 1000u64;
+leo run mint aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke 1000u64;
 
 
 echo "
 ###############################################################################
 ########                                                               ########
-########          STEP 2:  Tip the post                                ########
+########          STEP 3:  Tip the post                                ########
 ########                                                               ########
 ###############################################################################
 "
 # Tip the post
-# leo run tip 2793123896416649578508430956173875066425468388805468715479907750778834469731416946970field;
+leo run tip 100field "{
+  owner: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke.private,
+  gates: 0u64.private,
+  amount: 100u64.private,
+  _nonce: 823431787811454510904938283634593098608691305151692245657827090711441043175group.public
+}"
+
+echo "
+###############################################################################
+########                                                               ########
+########          STEP 4:  Collect the post                            ########
+########                                                               ########
+###############################################################################
+"
+# Collect the tip
+# leo run collect 100field "{
+#   owner: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke.private,
+#   gates: 0u64.private,
+#   cid: 100field.private,
+#   _nonce: 5506401466055046694601289060814381342114151119127855121049444714195634838102group.public
+# }" 10u64

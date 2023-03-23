@@ -1,5 +1,3 @@
-import wcredits.leo;
-
 // The 'posts' program.
 
 // Posts allows for zk-enabled knowledge sharing.
@@ -9,6 +7,12 @@ import wcredits.leo;
 // The original creator of the post will be able to collect those posts
 
 program posts.aleo {
+
+    record credits {
+        owner: address,
+        gates: u64,
+        amount: u64
+    }
 
 	// The post_owner record is used to track the ownership of the post
     // Anyone who holds the post_owner record for a particular cid will be 
@@ -36,6 +40,73 @@ program posts.aleo {
     // Usage: uncollected_royalty[cid] = royalty_amount
     mapping uncollected_royalty: field => u64;
 
+
+    transition mint(receiver: address, amount: u64) -> credits {
+        return credits {
+            owner: receiver,
+            gates: 0u64,
+            amount: amount
+        };
+    }
+
+    transition transfer(sender: credits, receiver: address, amount: u64) -> (credits, credits) {
+        let difference: u64 = sender.amount - amount;
+
+        let transferred: credits = credits {
+            owner: receiver,
+            gates: 0u64,
+            amount: amount
+        };
+
+        let remaining: credits = credits {
+            owner: sender.owner,
+            gates: 0u64,
+            amount: difference
+        };
+
+        return (transferred, remaining);
+    }
+
+    transition join(first: credits, second: credits) -> credits {
+
+        return credits {
+            owner: first.owner,
+            gates: 0u64,
+            amount: first.amount + second.amount
+        };
+
+    }
+
+    transition split(sender: credits, amount: u64) -> (credits, credits) {
+        let difference: u64 = sender.gates - amount;
+
+        let transferred: credits = credits {
+            owner: sender.owner,
+            gates: 0u64,
+            amount: amount
+        };
+
+        let remaining: credits = credits {
+            owner: sender.owner,
+            gates: 0u64,
+            amount: amount
+        };
+
+        return (transferred, remaining);
+    }
+
+    transition fee(sender: credits, amount: u64) -> credits {
+        let difference: u64 = sender.gates - amount;
+
+        let remaining: credits = credits {
+            owner: sender.owner,
+            gates: 0u64,
+            amount: amount
+        };
+
+        return remaining;
+    }
+
     // This transition is used to broadcast a particular post
     // post_owner record is created for tracking the owner of the particular post
     transition post(public cid: field) -> post_owner{
@@ -45,11 +116,6 @@ program posts.aleo {
             cid: cid
         };
     }
-
-    transition mint_token(receiver: address, amount: u64) -> wcredits.leo/credits.record {
-        return wcredits.leo/mint(receiver, amount);
-    }
-
 
     // This transition is used to transfer ownership of post to a new address
     // post_owner record is created for tracking the owner of the particular post
@@ -63,7 +129,7 @@ program posts.aleo {
 
     // This transition is used to tip a particular post
     // cid is a public parameter for tracking the tips in a mapping
-    transition tip(public cid: field, tip_record: wcredits.leo/credits.record) {
+    transition tip(public cid: field, tip_record: credits) {
         return then finalize(cid, tip_record.gates);
     }
 
@@ -74,9 +140,13 @@ program posts.aleo {
 
     // This transition is used to collect the tips that has been collected by a particular post
     // post_owner record must be provided to ensure that only the post owner can collect the tips
-    transition collect(public cid: field, collector: post_owner, public amount: u64) -> (wcredits.leo/credits.record, post_owner) {
+    transition collect(public cid: field, collector: post_owner, public amount: u64) -> (credits, post_owner) {
         assert_eq(collector.cid, cid);
-        let newcredits: credits = wcredits.leo/mint(collector.owner, amount);
+        let newcredits: credits = credits {
+            owner: collector.owner,
+            gates: 0u64,
+            amount: amount
+        };
         return (newcredits, collector) then finalize(cid, amount);
     }
 
