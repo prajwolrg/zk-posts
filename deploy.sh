@@ -5,7 +5,7 @@ RECORD="{
 }"
 PRIVATEKEY="APrivateKey1zkpGWbPXNScC62Ww5jHxFTWa6st1wosnuKd693QVfHKyX7K"
 
-APPNAME="posts"
+APPNAME="postsV"
 snarkos developer deploy "${APPNAME}.aleo" \
 --private-key "${PRIVATEKEY}" \
 --query "https://vm.aleo.org/api" \

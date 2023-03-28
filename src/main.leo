@@ -6,7 +6,7 @@
 // Tip the posts anonymously if they like the content,
 // The original creator of the post will be able to collect those posts
 
-program posts.aleo {
+program postsV.aleo {
 
     record credits {
         owner: address,
