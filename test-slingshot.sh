@@ -1,0 +1,8 @@
+slingshot node start --key APrivateKey1zkpG9Af9z5Ha4ejVyMCqVFXRKknSm8L1ELEwcc4htk9YhVK
+
+slingshot deploy posts.aleo
+
+slingshot execute posts.aleo post 2793123896416649578508430956173875066425468388805468715479907750778834469731416946970field
+
+# Running the command again must fail. But it is working.
+slingshot execute posts.aleo post 2793123896416649578508430956173875066425468388805468715479907750778834469731416946970field
