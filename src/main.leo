@@ -40,7 +40,6 @@ program posts.aleo {
     // Usage: uncollected_royalty[cid] = royalty_amount
     mapping uncollected_royalty: field => u64;
 
-
     transition mint(receiver: address, amount: u64) -> credits {
         return credits {
             owner: receiver,
@@ -49,63 +48,63 @@ program posts.aleo {
         };
     }
 
-    transition transfer(sender: credits, receiver: address, amount: u64) -> (credits, credits) {
-        let difference: u64 = sender.amount - amount;
+    // transition transfer(sender: credits, receiver: address, amount: u64) -> (credits, credits) {
+    //     let difference: u64 = sender.amount - amount;
 
-        let transferred: credits = credits {
-            owner: receiver,
-            gates: 0u64,
-            amount: amount
-        };
+    //     let transferred: credits = credits {
+    //         owner: receiver,
+    //         gates: 0u64,
+    //         amount: amount
+    //     };
 
-        let remaining: credits = credits {
-            owner: sender.owner,
-            gates: 0u64,
-            amount: difference
-        };
+    //     let remaining: credits = credits {
+    //         owner: sender.owner,
+    //         gates: 0u64,
+    //         amount: difference
+    //     };
 
-        return (transferred, remaining);
-    }
+    //     return (transferred, remaining);
+    // }
 
-    transition join(first: credits, second: credits) -> credits {
+    // transition join(first: credits, second: credits) -> credits {
 
-        return credits {
-            owner: first.owner,
-            gates: 0u64,
-            amount: first.amount + second.amount
-        };
+    //     return credits {
+    //         owner: first.owner,
+    //         gates: 0u64,
+    //         amount: first.amount + second.amount
+    //     };
 
-    }
+    // }
 
-    transition split(sender: credits, amount: u64) -> (credits, credits) {
-        let difference: u64 = sender.gates - amount;
+    // transition split(sender: credits, amount: u64) -> (credits, credits) {
+    //     let difference: u64 = sender.gates - amount;
 
-        let transferred: credits = credits {
-            owner: sender.owner,
-            gates: 0u64,
-            amount: amount
-        };
+    //     let transferred: credits = credits {
+    //         owner: sender.owner,
+    //         gates: 0u64,
+    //         amount: amount
+    //     };
 
-        let remaining: credits = credits {
-            owner: sender.owner,
-            gates: 0u64,
-            amount: amount
-        };
+    //     let remaining: credits = credits {
+    //         owner: sender.owner,
+    //         gates: 0u64,
+    //         amount: amount
+    //     };
 
-        return (transferred, remaining);
-    }
+    //     return (transferred, remaining);
+    // }
 
-    transition fee(sender: credits, amount: u64) -> credits {
-        let difference: u64 = sender.gates - amount;
+    // transition fee(sender: credits, amount: u64) -> credits {
+    //     let difference: u64 = sender.gates - amount;
 
-        let remaining: credits = credits {
-            owner: sender.owner,
-            gates: 0u64,
-            amount: amount
-        };
+    //     let remaining: credits = credits {
+    //         owner: sender.owner,
+    //         gates: 0u64,
+    //         amount: amount
+    //     };
 
-        return remaining;
-    }
+    //     return remaining;
+    // }
 
     // This transition is used to broadcast a particular post
     // post_owner record is created for tracking the owner of the particular post
@@ -147,7 +146,12 @@ program posts.aleo {
             gates: 0u64,
             amount: amount
         };
-        return (newcredits, collector) then finalize(cid, amount);
+        let newCollector: post_owner = post_owner {
+            owner: collector.owner,
+            gates: 0u64,
+            cid: cid
+        };
+        return (newcredits, newCollector) then finalize(cid, amount);
     }
 
     // uncollected_tips[cid] -= amount

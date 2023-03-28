@@ -50,8 +50,7 @@ echo "
 ###############################################################################
 "
 # Converting IPFS CID (hex repr) in https://docs.ipfs.tech/concepts/content-addressing/#cid-conversion to decimal 
-# leo run post 2793123896416649578508430956173875066425468388805468715479907750778834469731416946970field;
-leo run post 100field;
+leo run post 2793123896416649578508430956173875066425468388805468715479907750778834469731416946970field;
 
 echo "
 ###############################################################################
@@ -72,7 +71,7 @@ echo "
 ###############################################################################
 "
 # Tip the post
-leo run tip 100field "{
+leo run tip 2793123896416649578508430956173875066425468388805468715479907750778834469731416946970field "{
   owner: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke.private,
   gates: 0u64.private,
   amount: 100u64.private,
@@ -87,9 +86,9 @@ echo "
 ###############################################################################
 "
 # Collect the tip
-# leo run collect 100field "{
-#   owner: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke.private,
-#   gates: 0u64.private,
-#   cid: 100field.private,
-#   _nonce: 5506401466055046694601289060814381342114151119127855121049444714195634838102group.public
-# }" 10u64
+leo run collect 2793123896416649578508430956173875066425468388805468715479907750778834469731416946970field "{
+  owner: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke.private,
+  gates: 0u64.private,
+  cid: 2793123896416649578508430956173875066425468388805468715479907750778834469731416946970field.private,
+  _nonce: 5506401466055046694601289060814381342114151119127855121049444714195634838102group.public
+}" 10u64
