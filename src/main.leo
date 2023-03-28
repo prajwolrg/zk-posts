@@ -40,6 +40,10 @@ program posts.aleo {
     // Usage: uncollected_royalty[cid] = royalty_amount
     mapping uncollected_royalty: field => u64;
 
+    // This mapping is used to publicly prevent multiple owner of the same post
+    // Usage: is_posted[cid] = 255 / 0 
+    mapping is_posted: field => u8;
+
     transition mint(receiver: address, amount: u64) -> credits {
         return credits {
             owner: receiver,
@@ -109,11 +113,16 @@ program posts.aleo {
     // This transition is used to broadcast a particular post
     // post_owner record is created for tracking the owner of the particular post
     transition post(public cid: field) -> post_owner{
-        return post_owner {
+        let collector: post_owner = post_owner {
             owner: self.caller,
             gates: 0u64,
             cid: cid
         };
+        return collector then finalize(cid);
+    }
+
+    finalize post(cid: field) {
+        increment(is_posted, cid, 255u8);
     }
 
     // This transition is used to transfer ownership of post to a new address
