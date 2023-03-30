@@ -31,7 +31,7 @@ echo "
 "
 # Swap in the private key and address of the first bidder to program.json.
 echo "{
-  \"program\": \"posts.aleo\",
+  \"program\": \"postsV.aleo\",
   \"version\": \"0.0.0\",
   \"description\": \"\",
   \"development\": {
@@ -50,7 +50,11 @@ echo "
 ###############################################################################
 "
 # Converting IPFS CID (hex repr) in https://docs.ipfs.tech/concepts/content-addressing/#cid-conversion to decimal 
-leo run post 2793123896416649578508430956173875066425468388805468715479907750778834469731416946970field;
+
+# Arweave (arweave.net) tx as FF -> scjQv99W2hhvxIydvoCejK3R_k3sV-fgEaUiYbpki8A = 402527374854052064221003265441617513852104232141623565551066572989268576096778
+# Split into   cid_part1: '4025273748540520642210032654416175138521', cid_part2: '04232141623565551066572989268576096778',
+# Use first 60 byes of hash of (cid_part1 + cid_part2) for cid to identify the post
+leo run post 402527374854052064221003265441617513852field 104232141623565551066572989268576096778field 479869638392589277799556918555882776920873297777087131318614268953292887field;
 
 echo "
 ###############################################################################
@@ -71,7 +75,7 @@ echo "
 ###############################################################################
 "
 # Tip the post
-leo run tip 2793123896416649578508430956173875066425468388805468715479907750778834469731416946970field "{
+leo run tip 479869638392589277799556918555882776920873297777087131318614268953292887field "{
   owner: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke.private,
   gates: 0u64.private,
   amount: 100u64.private,
@@ -86,9 +90,11 @@ echo "
 ###############################################################################
 "
 # Collect the tip
-leo run collect 2793123896416649578508430956173875066425468388805468715479907750778834469731416946970field "{
+leo run collect 479869638392589277799556918555882776920873297777087131318614268953292887field "{
   owner: aleo1yzlta2q5h8t0fqe0v6dyh9mtv4aggd53fgzr068jvplqhvqsnvzq7pj2ke.private,
   gates: 0u64.private,
-  cid: 2793123896416649578508430956173875066425468388805468715479907750778834469731416946970field.private,
-  _nonce: 5506401466055046694601289060814381342114151119127855121049444714195634838102group.public
+  cid_part1: 402527374854052064221003265441617513852field.private,
+  cid_part2: 104232141623565551066572989268576096778field.private,
+  cid: 479869638392589277799556918555882776920873297777087131318614268953292887field.private,
+  _nonce: 630047429497224873849452081439877064635841841106269654897536787612427709802group.public
 }" 10u64

@@ -8,6 +8,8 @@ record credits:
 record post_owner:
     owner as address.private;
     gates as u64.private;
+    cid_part1 as field.private;
+    cid_part2 as field.private;
     cid as field.private;
 
 mapping uncollected_tips:
@@ -37,10 +39,12 @@ function mint:
 
 function post:
     input r0 as field.public;
-    cast self.caller 0u64 r0 into r1 as post_owner.record;
-    output r1 as post_owner.record;
+    input r1 as field.public;
+    input r2 as field.public;
+    cast self.caller 0u64 r0 r1 r2 into r3 as post_owner.record;
+    output r3 as post_owner.record;
 
-    finalize r0;
+    finalize r2;
 
 finalize post:
     input r0 as field.public;
@@ -49,7 +53,7 @@ finalize post:
 function transfer_post:
     input r0 as post_owner.record;
     input r1 as address.private;
-    cast r1 0u64 r0.cid into r2 as post_owner.record;
+    cast r1 0u64 r0.cid_part1 r0.cid_part2 r0.cid into r2 as post_owner.record;
     output r2 as post_owner.record;
 
 function tip:
@@ -69,7 +73,7 @@ function collect:
     input r2 as u64.public;
     assert.eq r1.cid r0;
     cast r1.owner 0u64 r2 into r3 as credits.record;
-    cast r1.owner 0u64 r0 into r4 as post_owner.record;
+    cast r1.owner 0u64 r1.cid_part1 r1.cid_part2 r0 into r4 as post_owner.record;
     output r3 as credits.record;
     output r4 as post_owner.record;
 
