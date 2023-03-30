@@ -1,4 +1,4 @@
-program postsV.aleo;
+program postsVI.aleo;
 
 record credits:
     owner as address.private;

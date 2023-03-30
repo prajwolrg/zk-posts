@@ -1,11 +1,11 @@
 RECORD="{
-  owner: aleo1acqtj54fj8jgdhq2sk36we3xz45wk7090pf9xhxygv73re6q75qqfndv6g.private,
+  owner: aleo1qzjpvd78mqlv08ng0vud8tgdr7wafx3yafndh4035v59v32a7sqsyz6ft8.private,
   gates: 100000000u64.private,
-  _nonce: 1682710088856821825961820080701665429640069534691531062671101310423063458997group.public
+  _nonce: 3553559731143448056654052453071842618117644110493667004230285807150131995384group.public
 }"
-PRIVATEKEY="APrivateKey1zkpGWbPXNScC62Ww5jHxFTWa6st1wosnuKd693QVfHKyX7K"
+PRIVATEKEY="APrivateKey1zkp7trPMjRMToGeHpJt4TvhaQPjLARGn3HyL5GYWx6VqBXu"
 
-APPNAME="postsV"
+APPNAME="postsVI"
 snarkos developer deploy "${APPNAME}.aleo" \
 --private-key "${PRIVATEKEY}" \
 --query "https://vm.aleo.org/api" \
